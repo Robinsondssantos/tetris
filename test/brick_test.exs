@@ -51,8 +51,8 @@ defmodule BrickTest do
     actual_points =
     new_brick()
       |> shape
-      |> Points.translate({1, 1})
-      |> Points.translate({0, 1})
+      |> Points.move_to_location({1, 1})
+      |> Points.move_to_location({0, 1})
 
     assert actual_points = [{3, 3}, {3, 4}, {3, 5}, {3, 6}]
   end
@@ -67,6 +67,27 @@ defmodule BrickTest do
       |> assert_point({1, 4})
       |> Points.rotate_90
       |> assert_point({1, 1})
+  end
+
+  test "should convert brick to string" do
+    actual = new_brick() |> Tetris.Brick.to_string
+    expected = "⬜️⬜️⬜️⬜️\n🟨🟨🟨🟨\n⬜️⬜️⬜️⬜️\n⬜️⬜️⬜️⬜️"
+
+    assert actual = expected
+  end
+
+  test "should inspect bricks" do
+    actual = new_brick() |> inspect
+    expected =
+      """
+      ⬜️⬜️⬜️⬜️
+      🟨🟨🟨🟨
+      ⬜️⬜️⬜️⬜️
+      ⬜️⬜️⬜️⬜️
+      {#{x_center()}, 0} false 0
+      """
+
+    assert "#{actual}\n" == expected
   end
 
   def new_brick(attributes \\ []), do: new(attributes)
